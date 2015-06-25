@@ -1,5 +1,9 @@
 package com.example.billiewei.map;
 
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import com.google.android.gms.maps.GoogleMap;
@@ -10,7 +14,11 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MapsActivity extends FragmentActivity {
 
-    private GoogleMap mMap; // Might be null if Google Play services APK is not available.
+    // Might be null if Google Play services APK is not available.
+    private GoogleMap mMap;
+
+    // Initializes the LatLng variable for home position
+    LatLng home;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,9 +69,39 @@ public class MapsActivity extends FragmentActivity {
      */
     private void setUpMap() {
         mMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
+        mMap.addMarker(new MarkerOptions().position(new LatLng(22.281313, 114.169922)).title("Hong Kong"));
+
+        // Enables the application to access your location
         mMap.setMyLocationEnabled(true);
 
-        // Enable Zoom buttons
+        // Enable zoom buttons
         mMap.getUiSettings().setZoomControlsEnabled(true);
+
+        // Enable gestures
+        mMap.getUiSettings().setZoomGesturesEnabled(true);
+
+        // Getting LocationManager object from System Service LOCATION_SERVICE
+        LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+
+        // Creating a criteria object to retrieve provider
+        Criteria criteria = new Criteria();
+
+        // Getting the name of the best provider
+        String provider = locationManager.getBestProvider(criteria, true);
+
+        // Getting Current Location
+        Location location = locationManager.getLastKnownLocation(provider);
+
+        if(location!=null) {
+            // Getting latitude of the current location
+            double latitude = location.getLatitude();
+
+            // Getting longitude of the current location
+            double longitude = location.getLongitude();
+
+            home = new LatLng(latitude, longitude);
+
+            mMap.addMarker(new MarkerOptions().position(home).title("Home"));
+        }
     }
 }
