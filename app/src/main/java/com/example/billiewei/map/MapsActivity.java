@@ -68,7 +68,7 @@ public class MapsActivity extends FragmentActivity {
      * This should only be called once and when we are sure that {@link #mMap} is not null.
      */
     private void setUpMap() {
-        mMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
+        // Set a marker at Hong Kong
         mMap.addMarker(new MarkerOptions().position(new LatLng(22.281313, 114.169922)).title("Hong Kong"));
 
         // Enables the application to access your location
@@ -94,12 +94,12 @@ public class MapsActivity extends FragmentActivity {
 
         if(location!=null) {
             // Getting latitude of the current location
-            double latitude = location.getLatitude();
+            double mylatitude = location.getLatitude();
 
             // Getting longitude of the current location
-            double longitude = location.getLongitude();
+            double mylongitude = location.getLongitude();
 
-            home = new LatLng(latitude, longitude);
+            home = new LatLng(mylatitude, mylongitude);
 
             mMap.addMarker(new MarkerOptions().position(home).title("Home"));
         }
